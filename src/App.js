@@ -14,7 +14,7 @@ function App() {
     // Fetch random movies on initial load
     const fetchRandomMovies = async () => {
       try {
-        const response = await axios.get(`http://www.omdbapi.com/?s=action&apikey=277026cd`);
+        const response = await axios.get(`https://www.omdbapi.com/?s=action&apikey=277026cd`);
         if (response.data.Response === 'True') {
           setRandomMovies(response.data.Search.slice(0, 4)); // Show only 4 random movies
         }
@@ -40,7 +40,7 @@ function App() {
     setSearching(true);
     try {
       const response = await axios.get(
-        `http://www.omdbapi.com/?s=${searchTerm}&apikey=277026cd`
+        `https://www.omdbapi.com/?s=${searchTerm}&apikey=277026cd`
       );
       if (response.data.Response === 'True') {
         setMovies(response.data.Search);
