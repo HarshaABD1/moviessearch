@@ -75,23 +75,6 @@ function App() {
 
           {error && <p className="error-message">{error}</p>}
 
-          {!searching && !movies.length && (
-            <div className="carousel-section">
-              <div className="carousel-container">
-                {randomMovies.length > 0 && (
-                  <div className="carousel-item">
-                    <img
-                      src={randomMovies[currentIndex].Poster !== 'N/A' ? randomMovies[currentIndex].Poster : 'https://via.placeholder.com/150'}
-                      alt={randomMovies[currentIndex].Title}
-                      className="carousel-image"
-                    />
-                    <h2 className="carousel-title">{randomMovies[currentIndex].Title}</h2>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
           <div className="suggested-movies-section">
             <h2 className="section-title">{searching ? 'Search Results' : 'Suggested Movies'}</h2>
             <div className="movies-grid">
