@@ -8,31 +8,27 @@ function App() {
   const [randomMovies, setRandomMovies] = useState([]);
   const [error, setError] = useState('');
   const [searching, setSearching] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0); // For carousel functionality
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Fetch random movies on initial load
     const fetchRandomMovies = async () => {
       try {
         const response = await axios.get(`https://www.omdbapi.com/?s=action&apikey=277026cd`);
         if (response.data.Response === 'True') {
-          setRandomMovies(response.data.Search.slice(0, 4)); // Show only 4 random movies
+          setRandomMovies(response.data.Search.slice(0, 4));
         }
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchRandomMovies();
   }, []);
 
   useEffect(() => {
-    // Carousel functionality (change movie every 1 second)
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % randomMovies.length);
-    }, 1000); // Change every 1 second
-
-    return () => clearInterval(interval); // Cleanup the interval when component unmounts
+    }, 1000);
+    return () => clearInterval(interval);
   }, [randomMovies]);
 
   const fetchMovies = async () => {
@@ -69,7 +65,7 @@ function App() {
               type="text"
               placeholder="Search for a movie..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(event) => setSearchTerm(event.target.value)}
               className="search-input"
             />
             <button onClick={fetchMovies} className="search-button">
@@ -79,7 +75,6 @@ function App() {
 
           {error && <p className="error-message">{error}</p>}
 
-          {/* Carousel Section */}
           {!searching && !movies.length && (
             <div className="carousel-section">
               <div className="carousel-container">
@@ -97,7 +92,6 @@ function App() {
             </div>
           )}
 
-          {/* Suggested Movies Section (Below Carousel) */}
           <div className="suggested-movies-section">
             <h2 className="section-title">{searching ? 'Search Results' : 'Suggested Movies'}</h2>
             <div className="movies-grid">
@@ -121,10 +115,6 @@ function App() {
           </div>
         </div>
       </main>
-
-      <footer className="app-footer">
-        <p>&copy; 2025 Movie Search. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
