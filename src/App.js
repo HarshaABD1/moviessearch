@@ -5,17 +5,15 @@ import './App.css';
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
-  const [randomMovies, setRandomMovies] = useState([]);
   const [error, setError] = useState('');
   const [searching, setSearching] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchRandomMovies = async () => {
       try {
         const response = await axios.get(`https://www.omdbapi.com/?s=action&apikey=277026cd`);
         if (response.data.Response === 'True') {
-          setRandomMovies(response.data.Search.slice(0, 4));
+          setMovies(response.data.Search);
         }
       } catch (err) {
         console.error(err);
@@ -23,13 +21,6 @@ function App() {
     };
     fetchRandomMovies();
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % randomMovies.length);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [randomMovies]);
 
   const fetchMovies = async () => {
     if (!searchTerm) return;
@@ -65,7 +56,7 @@ function App() {
               type="text"
               placeholder="Search for a movie..."
               value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
             />
             <button onClick={fetchMovies} className="search-button">
@@ -78,7 +69,7 @@ function App() {
           <div className="suggested-movies-section">
             <h2 className="section-title">{searching ? 'Search Results' : 'Suggested Movies'}</h2>
             <div className="movies-grid">
-              {(movies.length > 0 ? movies : randomMovies).map((movie) => (
+              {movies.length > 0 && movies.map((movie) => (
                 <div key={movie.imdbID} className="movie-card">
                   <img
                     src={movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/150'}
@@ -98,6 +89,10 @@ function App() {
           </div>
         </div>
       </main>
+
+      <footer className="app-footer">
+        <p>&copy; 2025 Movie Search. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
